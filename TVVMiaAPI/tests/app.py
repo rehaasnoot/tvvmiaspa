@@ -4,7 +4,6 @@ from schema import Schema
 from graphql import GraphQLCachedBackend
 # from quiver.backend import GraphQLQuiverBackend
 
-
 def create_app(path='/graphql', **kwargs):
     # backend = GraphQLCachedBackend(GraphQLQuiverBackend({"async_framework": "PROMISE"}))
     backend = None

@@ -3,7 +3,7 @@ import pytest
 from .app import create_app
 from flask import url_for
 
-
+# Why use pytest fixtures
 @pytest.fixture
 def app():
     return create_app(graphiql=True)
