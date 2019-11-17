@@ -4,7 +4,7 @@ from flask_graphql import GraphQLView
 #from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from tvvmiaecology.config import TVVConfigApi
+from tvvmiaecology.settings import TVVConfigApi
 from flask_security import Security, SQLAlchemySessionUserDatastore
 
 from tvvmiaecology.database import db_session_scoped

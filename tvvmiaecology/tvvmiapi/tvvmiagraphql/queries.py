@@ -5,7 +5,7 @@ from .schema import Role, Login, Player, Instrument, Order
 
 TVVObjectType = SQLAlchemyObjectType
 
-class TVVQueries(ObjectType):
+class Queries(ObjectType):
 
     """Query objects for GraphQL API."""
 

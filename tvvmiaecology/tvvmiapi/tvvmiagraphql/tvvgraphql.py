@@ -1,5 +1,5 @@
 from graphene import Schema
-from .queries import TVVQueries
-from .mutations import TVVMutations
+from .queries import Queries
+from .mutations import Mutations
 
-TVVMiaAPIGraphQL = Schema(query=TVVQueries, mutation=TVVMutations)
+TVVMiaAPIGraphQL = Schema(query=Queries, mutation=Mutations)

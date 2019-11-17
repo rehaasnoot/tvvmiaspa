@@ -2,7 +2,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
-from tvvmiaecology.config import TVVConfigApi
+from tvvmiaecology.settings import TVVConfigApi
 
 CONFIG_SECTION = 'TVVMia API GraphQL'
 ENGINE_CONNECT_STRING = TVVConfigApi().get(CONFIG_SECTION, 'db_uri')

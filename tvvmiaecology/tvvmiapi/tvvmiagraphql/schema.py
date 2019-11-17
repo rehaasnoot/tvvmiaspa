@@ -1,37 +1,28 @@
-#!/usr/bin/env python3
-
 from graphene import relay
 from graphene_sqlalchemy import SQLAlchemyObjectType
-from tvvmiaecology.models import LoginModel, RoleModel, PlayerModel, InstrumentModel, OrderModel
+from ...models import RoleModel, LoginModel, PlayerModel, InstrumentModel, OrderModel
 
-TVVObjectType = SQLAlchemyObjectType
-
-#class TVVObjectType(SQLAlchemyObjectType):
-#    class Meta:
-#        abstract = True
-#        interfaces = (relay.Node, )
-
-class Login(TVVObjectType):
-    class Meta:
-        model = LoginModel
-        interfaces = (relay.Node, )
-
-class Role(TVVObjectType):
+class Role(SQLAlchemyObjectType):
     class Meta:
         model = RoleModel
         interfaces = (relay.Node, )
 
-class Player(TVVObjectType):
+class Login(SQLAlchemyObjectType):
+    class Meta:
+        model = LoginModel
+        interfaces = (relay.Node, )
+
+class Player(SQLAlchemyObjectType):
     class Meta:
         model = PlayerModel
         interfaces = (relay.Node, )
 
-class Instrument(TVVObjectType):
+class Instrument(SQLAlchemyObjectType):
     class Meta:
         model = InstrumentModel
         interfaces = (relay.Node, )
 
-class Order(TVVObjectType):
+class Order(SQLAlchemyObjectType):
     class Meta:
         model = OrderModel
         interfaces = (relay.Node, )

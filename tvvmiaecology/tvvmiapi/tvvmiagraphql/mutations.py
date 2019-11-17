@@ -1,4 +1,4 @@
-from graphene import relay , Boolean , String , Field, Mutation , ObjectType
+from graphene import relay , Boolean , String , Field , Mutation , ObjectType
 from .schema import Role
 from tvvmiaecology.models import newUUID
 
@@ -15,7 +15,7 @@ class RoleCreate(Mutation):
         ok = True
         return RoleCreate(name=name, ok=ok)
 
-class TVVMutations(ObjectType):
+class Mutations(ObjectType):
     """Query objects for GraphQL API."""
     #node = relay.Node.Field()
     newRole = relay.Node.Field(RoleCreate)

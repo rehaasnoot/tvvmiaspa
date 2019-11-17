@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import uuid
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, func
 from sqlalchemy.ext.declarative import declarative_base
@@ -57,7 +56,6 @@ class PlayerModel(TVVBase, TVVModelAux):
     uri = Column('uri', String, nullable=False)
     #players = relationship('OrderModel', backref='player')
 #    orders = relationship('OrderModel', back_populates='player')
-
 class InstrumentModel(TVVBase, TVVModelAux):
     __tablename__ = 'tvvinstrument'
     id = Column('id', Integer, primary_key=True, nullable=False, autoincrement=True)
