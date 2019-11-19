@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .settings import LOGIN_URL, ROOT_URL
 from django.contrib import auth
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
@@ -34,18 +35,27 @@ def current_datetime(request):
     html = "<html><body>It is now %s.</body></html>" % now
     return HttpResponse(html)
 
-
 #from django.http import HttpResponseNotFound
 from django.http import Http404
 from .models import Player
 
+class TVVLoginView(TemplateView):
+    template_name = 'registration/login.html'
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name);
+    #template_name = 'registration/loggedout.html'
+
 decorators = [login_required, permission_required, never_cache]
 
 #@method_decorator(decorators, name='dispatch')
+#class TVVView(LoginRequiredMixin, TemplateView):
 class TVVView(TemplateView):
     template_name = None
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, self.get_context_data())
+        user = request.user
+        if user.is_authenticated and not user.is_anonymous:
+            return render(request, self.template_name, self.get_context_data())            
+        return render(request, self.template_name, self.get_context_data())            
     
 class IndexView(TVVView):
     template_name = 'index.html'

@@ -21,20 +21,25 @@ from django.conf.urls.static import static
 from graphene_django.views import GraphQLView
 from . import views
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import views as auth_views
+
 
 #    path('accounts/login/', LoginView),
 #    path('accounts/logout/', LogoutView),
 #    url(r'^login/$', LoginView.as_view(template_name='registration/login.html'), name='login'),
 
+richie = admin.site.urls
 urlpatterns = [
     path('admin/', admin.site.urls, name='Admin', kwargs=None),
     path('graphql/', GraphQLView.as_view(graphiql=True), name='GraphQL', kwargs=None),
-    path('login/', view=LoginView.as_view(), name='Login', kwargs=None),
+    path('login/', view=LoginView.as_view(template_name='registration/login.html'), name='Login', kwargs=None),
     path('current_datetime/', view=views.current_datetime, name='Now', kwargs=None),
     path('app/', view=views.AppView.as_view(), name='App', kwargs=None),
     path('player/', view=views.PlayerView.as_view(), name='Player', kwargs=None),
     path('', view=views.IndexView.as_view(), name='index', kwargs=None),
 ]
+
+urlpatterns += [ path('accounts/', include('django.contrib.auth.urls')) ]
 
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
