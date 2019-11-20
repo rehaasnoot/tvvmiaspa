@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,14 +19,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '61d&u!lq*o^k9&)ij5w2@wmf18nr81jx4j)ge(rt8!29xz(@l+'
+SECRETS_FILE="/tvv/secrets/tvvspa.settings.json"
+SECRETS_JSON = json.load(open(SECRETS_FILE, 'r'))
+SECRET_KEY = SECRETS_JSON.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -78,7 +79,7 @@ WSGI_APPLICATION = 'apps.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join('/Users/rhaasnoot/Documents/workspace/databases/django/', 'tvvspa.db'),
+        'NAME': os.path.join(SECRETS_JSON.get("DATABASE_LOCATION"), SECRETS_JSON.get("DATABASE_NAME")),
     }
 }
 
@@ -119,6 +120,7 @@ ROOT_URL='/'
 LOGIN_URL='registration/login.html'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+#STATIC_ROOT = BASE_DIR + '/apps/static'
 STATIC_URL = '/static/'
 
 GRAPHENE = { 'SCHEMA':'apps.schema.schema' }
@@ -131,5 +133,5 @@ UPLOAD_PLAYER_IMAGE = 'player/images/'
 UPLOAD_MUSIC_MIDI = 'music/midi/'
 UPLOAD_MUSIC_AUDIO = 'music/audio/'
 
-MEDIA_ROOT = BASE_DIR + '/media'
+MEDIA_ROOT = BASE_DIR + '/apps/media'
 MEDIA_URL = '/media/'
