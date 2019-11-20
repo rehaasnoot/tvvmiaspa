@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .settings import LOGIN_URL, ROOT_URL
+from ..settings import LOGIN_URL, ROOT_URL
 from django.contrib import auth
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
@@ -10,24 +10,21 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_safe
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
-
-
-def newUserViewF(request):
-    if "POST" == request.method:
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            redirect('/')
-
-def loginViewF(request):
-    template_name = LOGIN_URL
-    context = {}
-    return render(request, template_name, context);
-    #template_name = 'registration/loggedout.html'
-
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 import datetime
 
+
+def loginViewF(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        # Redirect to a success page.
+        return redirect(to='/app')
+    return render('Login Failed')
+    
 @require_safe
 @never_cache
 def current_datetime(request):
@@ -37,13 +34,23 @@ def current_datetime(request):
 
 #from django.http import HttpResponseNotFound
 from django.http import Http404
-from .models import Player
+from apps.tvvroot.models import Player
 
+#class Http404(TemplateView):
+#    template_name = "404.html"
+    
 class TVVLoginView(TemplateView):
     template_name = 'registration/login.html'
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name);
-    #template_name = 'registration/loggedout.html'
+    def post(self, request, *args, **kwargs):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/app')
+        raise Http404('Login Failed')
 
 decorators = [login_required, permission_required, never_cache]
 
@@ -56,12 +63,23 @@ class TVVView(TemplateView):
         if user.is_authenticated and not user.is_anonymous:
             return render(request, self.template_name, self.get_context_data())            
         return render(request, self.template_name, self.get_context_data())            
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if user.is_authenticated and not user.is_anonymous:
+            return render(request, self.template_name, self.get_context_data())            
+        return render(request, self.template_name, self.get_context_data())            
     
 class IndexView(TVVView):
     template_name = 'index.html'
 
 class AppView(TVVView):
     template_name = 'app.html'
+
+class CreateView(TVVView):
+    template_name = 'create.html'
+
+class AboutView(TVVView):
+    template_name = 'about.html'
 
 class PlayerView(TVVView):
     template_name = 'player.html'
@@ -73,4 +91,3 @@ class PlayerDetail(TVVView):
             return render(request, 'playerdetail.html', {})
         except Player.DoesNotExist:
             raise Http404("Player does not exist")
-

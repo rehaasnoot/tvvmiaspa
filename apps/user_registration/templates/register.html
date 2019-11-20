@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}User Registration
+{% endblock %}
+{% block content %}
+<form method="POST" class="form-group">
+	{% csrf_token %}
+	{{form}}
+	<button class="btn btn-primary" href="{% url 'register_user'%}">Register</button>
+</form>
+{% endblock %}

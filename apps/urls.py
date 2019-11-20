@@ -1,4 +1,4 @@
-"""tvvspa URL Configuration
+"""apps URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -19,27 +19,38 @@ from django.urls import path
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from graphene_django.views import GraphQLView
-from . import views
+from apps.tvvroot import views as rootv
+from apps.user_registration import views as regv
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views as auth_views
-
 
 #    path('accounts/login/', LoginView),
 #    path('accounts/logout/', LogoutView),
 #    url(r'^login/$', LoginView.as_view(template_name='registration/login.html'), name='login'),
+#    path('login/', view=LoginView.as_view(template_name='registration/login.html'), name='Login', kwargs=None),
+#    path('app/', view=mv.AppView.as_view(), name='App', kwargs=None),
+#    path('', view=mv.IndexView.as_view(), name='index', kwargs=None),
+#    path('tvvroot/', view=rootv.IndexView.as_view(), name='TVV Mia Application', kwargs=None),
+#    path('registration/', view=rv.registerUser, name='Registration', kwargs=None),
+#    path('player/', view=rootv.PlayerView.as_view(), name='Player', kwargs=None),
+    #path('registration/', view=regv.registerUser, name='Registration', kwargs=None),
 
-richie = admin.site.urls
+#richie = admin.site.urls
+
 urlpatterns = [
     path('admin/', admin.site.urls, name='Admin', kwargs=None),
     path('graphql/', GraphQLView.as_view(graphiql=True), name='GraphQL', kwargs=None),
-    path('login/', view=LoginView.as_view(template_name='registration/login.html'), name='Login', kwargs=None),
-    path('current_datetime/', view=views.current_datetime, name='Now', kwargs=None),
-    path('app/', view=views.AppView.as_view(), name='App', kwargs=None),
-    path('player/', view=views.PlayerView.as_view(), name='Player', kwargs=None),
-    path('', view=views.IndexView.as_view(), name='index', kwargs=None),
+    path('current_datetime/', view=rootv.current_datetime, name='Now', kwargs=None),
+    path('registration/', view=regv.registerUser, name='Registration', kwargs=None),
+    path('register_user', view=regv.registerUser, name='Register User', kwargs=None),
+    path('', view=rootv.IndexView.as_view(), name='index', kwargs=None),
+    path('app', view=rootv.AppView.as_view(), name='index', kwargs=None),
+    path('create', view=rootv.CreateView.as_view(), name='index', kwargs=None),
+    path('about', view=rootv.AboutView.as_view(), name='index', kwargs=None),
+    path('login', view=rootv.TVVLoginView.as_view(), name='Login', kwargs=None)
 ]
 
-urlpatterns += [ path('accounts/', include('django.contrib.auth.urls')) ]
+#urlpatterns += [ path('accounts/', include('django.contrib.auth.urls')) ]
 
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 

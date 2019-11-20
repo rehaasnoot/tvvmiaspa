@@ -1,5 +1,3 @@
-{% extends "app.py" %}
-
 {% block content %}
 
   {% if form.errors %}
@@ -11,7 +9,7 @@
     <input type="text" name="username" value="" id="username">
     <label for="password">Password:</label>
     <input type="password" name="password" value="" id="password">
-
+    {% csrf_token %}
     <input type="submit" value="login" />
     <input type="hidden" name="next" value="{{ next|escape }}" />
   </form>

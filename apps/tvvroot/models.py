@@ -1,9 +1,10 @@
+
 from django.db import models
 from django.contrib.auth.models import User
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from uuid import uuid1
-from .settings import UPLOAD_USER_IMAGE, UPLOAD_INSTRUMENT_IMAGE, UPLOAD_INSTRUMENT_BLEND, UPLOAD_PLAYER_IMAGE, UPLOAD_PLAYER_BLEND, UPLOAD_MUSIC_MIDI, UPLOAD_MUSIC_AUDIO
+from ..settings import UPLOAD_USER_IMAGE, UPLOAD_INSTRUMENT_IMAGE, UPLOAD_INSTRUMENT_BLEND, UPLOAD_PLAYER_IMAGE, UPLOAD_PLAYER_BLEND, UPLOAD_MUSIC_MIDI, UPLOAD_MUSIC_AUDIO
 
 class UserPhoto(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
