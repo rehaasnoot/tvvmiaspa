@@ -120,10 +120,10 @@ ROOT_URL='/'
 LOGIN_URL='registration/login.html'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-#STATIC_ROOT = BASE_DIR + '/apps/static'
+STATIC_ROOT = BASE_DIR + '/apps/static'
 STATIC_URL = '/static/'
 
-GRAPHENE = { 'SCHEMA':'apps.schema.schema' }
+GRAPHENE = { 'SCHEMA':'apps.tvvroot.schema.schema' }
 
 UPLOAD_USER_IMAGE = 'user/images/'
 UPLOAD_INSTRUMENT_BLEND = 'instrument/blend/'
@@ -132,6 +132,7 @@ UPLOAD_PLAYER_BLEND = 'player/blend/'
 UPLOAD_PLAYER_IMAGE = 'player/images/'
 UPLOAD_MUSIC_MIDI = 'music/midi/'
 UPLOAD_MUSIC_AUDIO = 'music/audio/'
+UPLOAD_VIDEO = 'music/video/'
 
 MEDIA_ROOT = BASE_DIR + '/apps/media'
 MEDIA_URL = '/media/'

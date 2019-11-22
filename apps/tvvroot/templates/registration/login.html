@@ -1,8 +1,15 @@
+{% extends "base.html" %}
+
 {% block content %}
 
   {% if form.errors %}
     <p class="error">Sorry, that's not a valid username or password</p>
   {% endif %}
+	<div class="border-top pt-3">
+		<small class="text-muted">
+			Not signed up? <a class="ml-2" href="/register">Sign Up Here</a>
+		</small>
+	</div>
 
   <form action="" method="post">
     <label for="username">User name:</label>

@@ -3,9 +3,20 @@
 {% block title %}User Registration
 {% endblock %}
 {% block content %}
-<form method="POST" class="form-group">
-	{% csrf_token %}
-	{{form}}
-	<button class="btn btn-primary" href="{% url 'register_user'%}">Register</button>
-</form>
+<div class="content-section">
+	<legend class="border-bottom mb4">Register for all the fun!
+	<form method="POST" class="form-group">
+		{% csrf_token %}
+			<fieldset class="form-group">
+			{{form}}
+			<button class="btn btn-primary" href="{% url 'Register User'%}">Register</button>
+			</fieldset>
+	</form>
+	</legend>
+	<div class="border-top pt-3">
+		<small class="text-muted">
+			Already signed up? <a class="ml-2" href="/login">Login in Here</a>
+		</small>
+	</div>
+</div>
 {% endblock %}

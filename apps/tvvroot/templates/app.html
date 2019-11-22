@@ -9,7 +9,13 @@
 		<a href="/">Home</a>
 		<a href="/create">Create</a>
 		<a href="/about">About</a>
+		<a href="/videos">Sample Videos</a>
 		<a href="/login">Login</a>
+		<a href="/register">Register</a>
+		{% if admin %}
+			<a href="/admin">Administration</a>
+			<a href="/graphql">GraphQL API Front-end</a>
+		{% endif %}
 	</div>
 
 </div>

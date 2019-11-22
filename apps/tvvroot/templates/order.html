@@ -1,0 +1,9 @@
+{% extends "app.html" %}
+
+{% block content %}
+<div>
+	Order Template for user: {{ username }}
+	{% for order in orders %}
+	{{order.name}}
+</div>
+{% endblock %}

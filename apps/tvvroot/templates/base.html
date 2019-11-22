@@ -1,14 +1,25 @@
+{% load static %}
 <!DOCTYPE html>
 <head>
-	<title>TVV Mia</title>
-	Head stuff...
+	<meta name="Copyright" content="The Vinyl Villains: Musical Instrument Animator">
+	<meta charset='UTF-8'>
+	<meta name='viewport' content="width=device-width, initial-scale=1">
+	<meta name="ROBOTS" content="ALL">
+	<meta name="Keywords" content="Blender, TVV, The Vinyl Villains, animated musicians">
+	<link rel="stylesheet" type="text/css" href="{% static 'tvv.css' %}">
 </head>
 <header>
+	<style>
+		body { background: black;  margin: 0px; color: whitesmoke }
+	</style>
 	{% block header %}
+	<div class=grid>
 	Header goes here...
+	</div>
 	{% endblock %}
 </header>
 <body>
+	<link rel="stylesheet" type="text/css" href="{% static 'tvv.css' %}">
 	{% block content %}
 	{% endblock %}
 </body>

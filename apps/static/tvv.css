@@ -1,0 +1,13 @@
+grid > div {
+	display : grid;
+	grid-template: 1fr 4fr;
+	}
+header {
+	background: black;
+	}
+body {
+    background: black url("/TVVv2-002.png") no-repeat;
+}
+body {
+	background: black;
+	}

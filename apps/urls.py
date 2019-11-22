@@ -13,45 +13,34 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from .settings import MEDIA_ROOT, MEDIA_URL
+from .settings import MEDIA_ROOT, MEDIA_URL, STATIC_URL, STATIC_ROOT
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from graphene_django.views import GraphQLView
-from apps.tvvroot import views as rootv
-from apps.user_registration import views as regv
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views as auth_views
-
-#    path('accounts/login/', LoginView),
-#    path('accounts/logout/', LogoutView),
-#    url(r'^login/$', LoginView.as_view(template_name='registration/login.html'), name='login'),
-#    path('login/', view=LoginView.as_view(template_name='registration/login.html'), name='Login', kwargs=None),
-#    path('app/', view=mv.AppView.as_view(), name='App', kwargs=None),
-#    path('', view=mv.IndexView.as_view(), name='index', kwargs=None),
-#    path('tvvroot/', view=rootv.IndexView.as_view(), name='TVV Mia Application', kwargs=None),
-#    path('registration/', view=rv.registerUser, name='Registration', kwargs=None),
-#    path('player/', view=rootv.PlayerView.as_view(), name='Player', kwargs=None),
-    #path('registration/', view=regv.registerUser, name='Registration', kwargs=None),
-
-#richie = admin.site.urls
+from django.contrib.auth.decorators import login_required
+from apps.tvvroot import views as rootv
+from apps.user_registration import views as regv
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='Admin', kwargs=None),
     path('graphql/', GraphQLView.as_view(graphiql=True), name='GraphQL', kwargs=None),
     path('current_datetime/', view=rootv.current_datetime, name='Now', kwargs=None),
-    path('registration/', view=regv.registerUser, name='Registration', kwargs=None),
-    path('register_user', view=regv.registerUser, name='Register User', kwargs=None),
+#    path('register_user/', view=regv.RegisterView.as_view(), name='Register User', kwargs=None),
+    url(r'^register/', view=regv.RegisterView.as_view(template_name="register.html"), name="Register User"),
     path('', view=rootv.IndexView.as_view(), name='index', kwargs=None),
-    path('app', view=rootv.AppView.as_view(), name='index', kwargs=None),
-    path('create', view=rootv.CreateView.as_view(), name='index', kwargs=None),
-    path('about', view=rootv.AboutView.as_view(), name='index', kwargs=None),
-    path('login', view=rootv.TVVLoginView.as_view(), name='Login', kwargs=None)
+    path('app', view=rootv.AppView.as_view(), name='App', kwargs=None),
+    path('create', view=rootv.CreateView.as_view(), name='Create', kwargs=None),
+    path('about', view=rootv.AboutView.as_view(), name='About', kwargs=None),
+    path('login', view=rootv.TVVLoginView.as_view(), name='Login', kwargs=None),
+    path('videos/', view=rootv.VideosView.as_view(), name='Videos'),
+    path('video/<int:video_id>/', view=rootv.VideoView.as_view(), name="video"),
+    path('orders', view=rootv.OrderView.as_view(), name='Orders', kwargs=None),
 ]
-
-#urlpatterns += [ path('accounts/', include('django.contrib.auth.urls')) ]
-
+urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
 from django.core.exceptions import PermissionDenied
