@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import json
 
+PROJECT_NAME = "tvvmiaspa"
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,6 +28,8 @@ SECRET_KEY = SECRETS_JSON.get("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['localhost', '192.168.0.3']
+#ALLOWED_HOSTS += ['192.168.0.2']
 
 # Application definition
 
@@ -120,8 +123,9 @@ ROOT_URL='/'
 LOGIN_URL='registration/login.html'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATIC_ROOT = BASE_DIR + '/apps/static'
+STATIC_ROOT = '/tvv/media/' + PROJECT_NAME + '/static/'
 STATIC_URL = '/static/'
+#STATICFILES_DIRS = (STATIC_ROOT, )
 
 GRAPHENE = { 'SCHEMA':'apps.tvvroot.schema.schema' }
 
@@ -133,6 +137,6 @@ UPLOAD_PLAYER_IMAGE = 'player/images/'
 UPLOAD_MUSIC_MIDI = 'music/midi/'
 UPLOAD_MUSIC_AUDIO = 'music/audio/'
 UPLOAD_VIDEO = 'music/video/'
-
-MEDIA_ROOT = BASE_DIR + '/apps/media'
+# Media files (admin/user uploads)
+MEDIA_ROOT = '/tvv/media/' + PROJECT_NAME + '/media/'
 MEDIA_URL = '/media/'

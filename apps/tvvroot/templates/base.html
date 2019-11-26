@@ -1,4 +1,4 @@
-{% load static %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <head>
 	<meta name="Copyright" content="The Vinyl Villains: Musical Instrument Animator">
@@ -6,25 +6,13 @@
 	<meta name='viewport' content="width=device-width, initial-scale=1">
 	<meta name="ROBOTS" content="ALL">
 	<meta name="Keywords" content="Blender, TVV, The Vinyl Villains, animated musicians">
-	<link rel="stylesheet" type="text/css" href="{% static 'tvv.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <header>
-	<style>
-		body { background: black;  margin: 0px; color: whitesmoke }
-	</style>
-	{% block header %}
-	<div class=grid>
-	Header goes here...
-	</div>
-	{% endblock %}
+{% block header %}
+{% endblock %}
 </header>
 <body>
-	<link rel="stylesheet" type="text/css" href="{% static 'tvv.css' %}">
-	{% block content %}
-	{% endblock %}
+{% block content %}
+{% endblock %}
 </body>
-<footer>
-	{% block footer %}
-	Footer goes here...
-	{% endblock %}
-</footer>

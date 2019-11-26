@@ -16,12 +16,13 @@ Including another URLconf
 from .settings import MEDIA_ROOT, MEDIA_URL, STATIC_URL, STATIC_ROOT
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import url, include
+from django.conf.urls import url #, include
 from django.conf.urls.static import static
+#from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from graphene_django.views import GraphQLView
-from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth import views as auth_views
-from django.contrib.auth.decorators import login_required
+#from django.contrib.auth.views import LoginView, LogoutView
+#from django.contrib.auth import views as auth_views
+#from django.contrib.auth.decorators import login_required
 from apps.tvvroot import views as rootv
 from apps.user_registration import views as regv
 
@@ -36,9 +37,10 @@ urlpatterns = [
     path('create', view=rootv.CreateView.as_view(), name='Create', kwargs=None),
     path('about', view=rootv.AboutView.as_view(), name='About', kwargs=None),
     path('login', view=rootv.TVVLoginView.as_view(), name='Login', kwargs=None),
+    path('logout', view=rootv.TVVLogoutView.as_view(), name='Logout', kwargs=None),
     path('videos/', view=rootv.VideosView.as_view(), name='Videos'),
     path('video/<int:video_id>/', view=rootv.VideoView.as_view(), name="video"),
-    path('orders', view=rootv.OrderView.as_view(), name='Orders', kwargs=None),
+    path('orders', view=rootv.OrdersView.as_view(), name='Orders', kwargs=None),
 ]
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
@@ -49,7 +51,6 @@ from django.test import SimpleTestCase, override_settings
 
 def response_error_handler(request, exception=None):
     return HttpResponse('Error handler content', status=403)
-
 
 def permission_denied_view(request):
     raise PermissionDenied

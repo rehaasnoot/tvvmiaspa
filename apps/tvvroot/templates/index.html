@@ -1,12 +1,12 @@
-{% extends "app.html" %}
+{% extends "base.html" %}
 
-{% block content %}
+{% block header %}
 <div>
-	<span>index.html</span>
 	<ul>Hello! Welcome to TVV Musical Instrument Animator!
-		<a href="./app" name="index">
-  			<span>click here -><img src="media/icon/TVVv2-002.png" alt="TVV Mia"></span>
-		</a>
+		<a href="./app">Click here to enter the Imaginarium!!!</a>
 	</ul>
 </div>
+{% endblock %}
+{% block content %}
+<div id="tvv-app">Welcome to the TVV MIA Imaginarium!?!</div>
 {% endblock %}

@@ -35,7 +35,7 @@ class Music(models.Model):
 class Video(models.Model):
     uuid = models.UUIDField(max_length=64, verbose_name=u"databasekey", default=uuid1)
     title = models.CharField(max_length=100)
-    video = models.FileField(upload_to=UPLOAD_VIDEO, default=None, blank=True, null=True)
+    video_uri = models.FileField(upload_to=UPLOAD_VIDEO, default=None, blank=True, null=True)
     video_url = models.URLField(default=None, blank=True, null=True)
     codec = models.CharField(max_length=64, default=None, blank=True, null=True)
     def __str__(self):
@@ -55,6 +55,7 @@ class Order(models.Model):
     def __str__(self):
         return "For: {}, {} -- {} playing {} on {}...".format(self.user.last_name, self.user.first_name, self.player.name, self.music_pkg.title, self.instrument.name) 
 
+from os import fork
 class Blender(models.Model):
     BLENDER_STATUS_PENDING = "PENDING"
     BLENDER_STATUS_REQUESTED = "REQUESTED"
@@ -72,10 +73,18 @@ class Blender(models.Model):
     )
     uuid = models.UUIDField(max_length=64, verbose_name=u"databasekey", default=uuid1)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    pid = models.IntegerField(default=-1)
     status = models.CharField(max_length=32, verbose_name=u"status", choices=BLENDER_STATUS_CHOICES, default=BLENDER_STATUS_PENDING)
     progress = models.PositiveSmallIntegerField(default=0)
     frame_start = models.PositiveIntegerField(default=1)
     frame_end = models.PositiveIntegerField(default=250)
     def __str__(self):
-        return "Order Process: {} <status,progress>=<{},{}>".format(self.order, self.status, self.progress ) 
-    
+        return "Order Process: {} <status,progress>=<{},{}>".format(self.order, self.status, self.progress )
+    def fork(self):
+        command = "blender"
+        self.pid = fork(command)
+        self.save()
+    def kill(self):
+        self.status = self.BLENDER_STATUS_ENDING
+    def killed(self):
+        self.status = self.BLENDER_STATUS_ENDED

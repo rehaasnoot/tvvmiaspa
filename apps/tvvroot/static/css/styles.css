@@ -1,0 +1,35 @@
+
+header {
+	color: whitesmoke;
+	background: red;
+	}
+
+body {
+	color: whitesmoke;
+	background-color: black;
+}
+
+#tvv-menu {
+	background-color: wheat;
+	flex-flow: column 1fr 5fr;
+	}
+
+#tvv-about {
+	background-image: url("/static/TVVv2-001.png");
+	background-repeat: no-repeat;
+	}
+
+#tvv-app {
+	background-image: url("/static/TVVv2-002.png");
+	background-repeat: no-repeat;
+	background-color:#FED;
+	}
+
+.hero-image {
+  background-image: url("TVV2-002.png"); /* The image used */
+  background-color: #cccccc; /* Used if the image is unavailable */
+  height: 100%; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+}

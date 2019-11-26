@@ -1,12 +1,15 @@
 {% extends "app.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block content %}
 <div>
 	<p>
-		{{video.title}}
-		{{video.video_url}}
+		{{title}}
+		<script>
+			let videoUrl = "mp4://tvvspa:8081{{url}}";
+		</script>
 		<video width="320" height="240" controls>
-			<source src="{% static '{{video.video_url}}' type='video/mp4' %}">
+			videoUrl
+			<source src="$videoUrl" type="video/mp4">
 			Your browser does not support the video tag.
 		</video>
 	</p>
