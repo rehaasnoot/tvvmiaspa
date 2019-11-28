@@ -18,6 +18,8 @@ class Instrument(models.Model):
     description = models.CharField(max_length=256)
     blend_file = models.FileField(upload_to=UPLOAD_INSTRUMENT_BLEND, default=None, blank=True, null=True)
     thumbnail = models.ImageField(upload_to=UPLOAD_INSTRUMENT_IMAGE, default=None, blank=True, null=True)
+    def __str__(self):
+        return "{}".format(self.name) 
 
 class Player(models.Model):
     uuid = models.UUIDField(max_length=64, verbose_name=u"databasekey", default=uuid1)
@@ -25,12 +27,16 @@ class Player(models.Model):
     description = models.CharField(max_length=256)
     blend_file = models.FileField(upload_to=UPLOAD_PLAYER_BLEND, default=None, blank=True, null=True)
     thumbnail = models.ImageField(upload_to=UPLOAD_PLAYER_IMAGE, default=None, blank=True, null=True)
+    def __str__(self):
+        return "{} on {}".format(self.name, self.description) 
     
 class Music(models.Model):
     uuid = models.UUIDField(max_length=64, verbose_name=u"databasekey", default=uuid1)
     title = models.CharField(max_length=100)
     midi = models.FileField(upload_to=UPLOAD_MUSIC_MIDI, default=None, blank=True, null=True)
     audio = models.FileField(upload_to=UPLOAD_MUSIC_AUDIO, default=None, blank=True, null=True)
+    def __str__(self):
+        return "{}".format(self.title) 
 
 class Video(models.Model):
     uuid = models.UUIDField(max_length=64, verbose_name=u"databasekey", default=uuid1)

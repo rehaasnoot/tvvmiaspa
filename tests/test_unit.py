@@ -53,8 +53,8 @@ class TestMusic(TVVTestCase):
 class TestVideo(TVVTestCase):
     TEST_VIDEO = None
     def setUp(self):
-        Video.objects.create(uuid=uuid1(RAND), title=TEST_TITLE + 'b', video=None)
-        self.TEST_VIDEO = Video.objects.create(uuid=TEST_UUID, title=TEST_TITLE, video=None)
+        Video.objects.create(uuid=uuid1(RAND), title=TEST_TITLE + 'b', video_uri=None, video_url=None)
+        self.TEST_VIDEO = Video.objects.create(uuid=TEST_UUID, title=TEST_TITLE, video_uri=None, video_url=None)
     def test_this(self):
         second = Video.objects.get(uuid=TEST_UUID)
         self.assertEqual(second.title, TEST_TITLE, self)
