@@ -7,10 +7,10 @@
 	<legend class="border-bottom mb4">Register for all the fun!
 	<form method="POST" class="form-group">
 		{% csrf_token %}
-			<fieldset class="form-group">
+		<fieldset class="form-group">
 			{{form}}
-			<button class="btn btn-primary" href="{% url 'Register User'%}">Register</button>
-			</fieldset>
+			<button class="btn btn-primary" href="{% url 'register_user' %}">Register</button>
+		</fieldset>
 	</form>
 	</legend>
 	<div class="border-top pt-3">

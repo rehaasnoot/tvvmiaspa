@@ -1,0 +1,14 @@
+{% extends "app.html" %}
+
+{% block content %}
+<div>
+	{{blagent}}
+	<ul>
+		<li>Frames: {{frame_start}}, {{frame_end}}</li>
+		<li>Player: {{player_name}}</li>
+		<li>Instrument: {{instrument_name}}</li>
+		<li>Midi File: {{midi_file_name}}</li>
+		<li>Midi Track: {{midi_track}}</li>
+	<ul>
+</div>
+{% endblock %}

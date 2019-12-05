@@ -1,23 +1,33 @@
+from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import User
-from imagekit.models import ProcessedImageField
+from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import ResizeToFill
 from uuid import uuid1
-from ..settings import UPLOAD_USER_IMAGE, UPLOAD_INSTRUMENT_IMAGE, UPLOAD_INSTRUMENT_BLEND, UPLOAD_PLAYER_IMAGE, UPLOAD_PLAYER_BLEND, UPLOAD_MUSIC_MIDI, UPLOAD_MUSIC_AUDIO, UPLOAD_VIDEO
+from apps.settings import UPLOAD_USER_IMAGE, UPLOAD_INSTRUMENT_IMAGE, UPLOAD_INSTRUMENT_BLEND, UPLOAD_PLAYER_IMAGE, UPLOAD_PLAYER_BLEND, UPLOAD_MUSIC_MIDI, UPLOAD_MUSIC_AUDIO, UPLOAD_VIDEO
+
+TVV_THUMBNAIL_ASPECT_X = 300
+TVV_THUMBNAIL_ASPECT_Y = 300
+TVV_THUMBNAIL_QUALITY = 99
+TVV_THUMBNAIL_FORMAT = 'JPEG'
+
 
 class UserPhoto(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     photos = ProcessedImageField(upload_to=UPLOAD_USER_IMAGE,
-                                       processors=[ResizeToFill(300, 300)],
-                                       format='JPEG',
-                                       options={'quality': 90})
+                                       processors=[ResizeToFill(TVV_THUMBNAIL_ASPECT_X, TVV_THUMBNAIL_ASPECT_Y)],
+                                       format=TVV_THUMBNAIL_FORMAT,
+                                       options={'quality': TVV_THUMBNAIL_QUALITY})
 
 class Instrument(models.Model):
     uuid = models.UUIDField(max_length=64, verbose_name=u"databasekey", default=uuid1)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=256)
     blend_file = models.FileField(upload_to=UPLOAD_INSTRUMENT_BLEND, default=None, blank=True, null=True)
-    thumbnail = models.ImageField(upload_to=UPLOAD_INSTRUMENT_IMAGE, default=None, blank=True, null=True)
+    thumbnail_orig = models.ImageField(upload_to=UPLOAD_INSTRUMENT_IMAGE, default=None, blank=True, null=True)
+    thumbnail = ImageSpecField(source='thumbnail_orig', processors=[ResizeToFill(TVV_THUMBNAIL_ASPECT_X, TVV_THUMBNAIL_ASPECT_Y)],
+                    format=TVV_THUMBNAIL_FORMAT, options={'quality': TVV_THUMBNAIL_QUALITY})
+
     def __str__(self):
         return "{}".format(self.name) 
 
@@ -26,7 +36,9 @@ class Player(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=256)
     blend_file = models.FileField(upload_to=UPLOAD_PLAYER_BLEND, default=None, blank=True, null=True)
-    thumbnail = models.ImageField(upload_to=UPLOAD_PLAYER_IMAGE, default=None, blank=True, null=True)
+    thumbnail_orig = models.ImageField(upload_to=UPLOAD_PLAYER_IMAGE, default=None, blank=True, null=True)
+    thumbnail = ImageSpecField(source='thumbnail_orig', processors=[ResizeToFill(TVV_THUMBNAIL_ASPECT_X, TVV_THUMBNAIL_ASPECT_Y)],
+                    format=TVV_THUMBNAIL_FORMAT, options={'quality': TVV_THUMBNAIL_QUALITY})
     def __str__(self):
         return "{} on {}".format(self.name, self.description) 
     
@@ -54,14 +66,19 @@ class Order(models.Model):
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
     music_pkg = models.ForeignKey(Music, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    start_frame = models.PositiveSmallIntegerField(default=0)
+    end_frame = models.PositiveSmallIntegerField(default=250)
     is_complete = models.BooleanField(default=False)
     in_progress = models.BooleanField(default=False)
     progress = models.PositiveSmallIntegerField(default=0)
     deliverable = models.URLField(default=None, blank=True, null=True)
     def __str__(self):
         return "For: {}, {} -- {} playing {} on {}...".format(self.user.last_name, self.user.first_name, self.player.name, self.music_pkg.title, self.instrument.name) 
+    def descr(self):
+        return "{},{}-{} playing {} on {}".format(self.user.last_name, self.user.first_name, self.player.name, self.music_pkg.title, self.instrument.name) 
+    def get_absolute_url(self):
+        return reverse('order_detail', kwargs={'pk': self.pk})
 
-from os import fork
 class Blender(models.Model):
     BLENDER_STATUS_PENDING = "PENDING"
     BLENDER_STATUS_REQUESTED = "REQUESTED"
@@ -86,11 +103,3 @@ class Blender(models.Model):
     frame_end = models.PositiveIntegerField(default=250)
     def __str__(self):
         return "Order Process: {} <status,progress>=<{},{}>".format(self.order, self.status, self.progress )
-    def fork(self):
-        command = "blender"
-        self.pid = fork(command)
-        self.save()
-    def kill(self):
-        self.status = self.BLENDER_STATUS_ENDING
-    def killed(self):
-        self.status = self.BLENDER_STATUS_ENDED

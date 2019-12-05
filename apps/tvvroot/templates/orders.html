@@ -1,0 +1,12 @@
+{% extends "app.html" %}
+
+{% block content %}
+<div>
+	<h1>Order Template for user: {{ username }}</h1>
+	<ul>
+	{% for order in orders %}
+		<a href="{% url 'order_detail' order.id %}">{{order.descr}}</a>
+	{% endfor %}
+	</ul>
+</div>
+{% endblock %}

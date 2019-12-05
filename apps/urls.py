@@ -13,10 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from .settings import MEDIA_ROOT, MEDIA_URL, STATIC_URL, STATIC_ROOT
+from apps.settings import MEDIA_ROOT, MEDIA_URL, STATIC_URL, STATIC_ROOT
 from django.contrib import admin
-from django.urls import path
-from django.conf.urls import url #, include
+from django.urls import path, re_path
+from django.conf.urls import url, include
 from django.conf.urls.static import static
 #from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from graphene_django.views import GraphQLView
@@ -27,20 +27,25 @@ from apps.tvvroot import views as rootv
 from apps.user_registration import views as regv
 
 urlpatterns = [
-    path('admin/', admin.site.urls, name='Admin', kwargs=None),
-    path('graphql/', GraphQLView.as_view(graphiql=True), name='GraphQL', kwargs=None),
-    path('current_datetime/', view=rootv.current_datetime, name='Now', kwargs=None),
-#    path('register_user/', view=regv.RegisterView.as_view(), name='Register User', kwargs=None),
-    url(r'^register/', view=regv.RegisterView.as_view(template_name="register.html"), name="Register User"),
-    path('', view=rootv.IndexView.as_view(), name='index', kwargs=None),
-    path('app', view=rootv.AppView.as_view(), name='App', kwargs=None),
-    path('create', view=rootv.CreateView.as_view(), name='Create', kwargs=None),
-    path('about', view=rootv.AboutView.as_view(), name='About', kwargs=None),
-    path('login', view=rootv.TVVLoginView.as_view(), name='Login', kwargs=None),
-    path('logout', view=rootv.TVVLogoutView.as_view(), name='Logout', kwargs=None),
-    path('videos/', view=rootv.VideosView.as_view(), name='Videos'),
-    path('video/<int:video_id>/', view=rootv.VideoView.as_view(), name="video"),
-    path('orders', view=rootv.OrdersView.as_view(), name='Orders', kwargs=None),
+    path('', view=rootv.IndexView.as_view(), name=rootv.IndexView.name),
+    path('admin/', admin.site.urls, name='Admin'),
+    path('graphql/', GraphQLView.as_view(graphiql=True), name='GraphQL'),
+    path('current_datetime/', view=rootv.current_datetime, name='now'),
+    url('^registration/', include("apps.user_registration.urls") ),
+    path('app/', view=rootv.AppView.as_view(), name=rootv.AppView.name),
+    url(r'^about/$', view=rootv.AboutView.as_view(), name=rootv.AboutView.name),
+    path('login/', view=rootv.TVVLoginView.as_view(), name=rootv.TVVLoginView.name),
+    path('logout/', view=rootv.TVVLogoutView.as_view()),
+    path('videos/', view=rootv.VideosView.as_view(), name=rootv.VideosView.name),
+    path('video/<int:video_id>/', view=rootv.VideoView.as_view(), name=rootv.VideosView.name),
+    url(r'^orders/', view=rootv.OrdersView.as_view(), name=rootv.OrdersView.name),
+    url(r'^order/create/', view=rootv.OrderCreate.as_view(), name=rootv.OrderCreate.name),
+    url(r'^order/update/', view=rootv.OrderUpdate.as_view(), name=rootv.OrderUpdate.name),
+    url(r'^order/delete/', view=rootv.OrderDelete.as_view(), name=rootv.OrderDelete.name),
+    re_path(r'^order/detail/(?P<pk>\d+)$', view=rootv.OrderDetailView.as_view(), name=rootv.OrderDetailView.name),
+#    path('order/detail/<int:pk>/', view=rootv.OrderDetailView.as_view(), name=rootv.OrderDetailView.name),
+    url(r'^blagent/', view=rootv.TVVBlagentView.as_view(), name=rootv.TVVBlagentView.name),
+    re_path(r'^fib/(?P<n>\d+)$', view=rootv.WWWfibonacci, name='fibonacci'),
 ]
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

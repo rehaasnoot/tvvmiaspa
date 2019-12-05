@@ -7,7 +7,7 @@
   {% endif %}
 	<div class="border-top pt-3">
 		<small class="text-muted">
-			Not signed up? <a class="ml-2" href="/register">Sign Up Here</a>
+			Not signed up? <a class="ml-2" href="{% url 'register_user' %}">Sign Up Here</a>
 		</small>
 	</div>
 
@@ -17,7 +17,7 @@
     <label for="password">Password:</label>
     <input type="password" name="password" value="" id="password">
     {% csrf_token %}
-    <input type="submit" value="login" />
+    <input type="submit" value="{% url 'Login' %}" />
     <input type="hidden" name="next" value="{{ next|escape }}" />
   </form>
 
