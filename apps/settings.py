@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import json
-from .config import TVVConfigApp
+from tvvconfig import TVVConfigApp
+from django.conf.global_settings import STATIC_ROOT
 
 config = TVVConfigApp()
 PROJECT_NAME = "tvvmiaspa"
@@ -32,7 +33,7 @@ DEBUG = True
 if "False" == config.get(CONFIG_SECTION_NAME, "DEBUG"):
     DEBUG = False
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', 'tvvmia.rocks', 'www.tvvmia.rocks']
 
 # Application definition
 
@@ -46,8 +47,13 @@ INSTALLED_APPS = [
     'graphene_django',
     'imagekit',
     'apps.tvvroot.apps.TVVRootConfig',
-    'apps.user_registration.apps.RegistrationConfig'
+    'apps.user_registration.apps.RegistrationConfig',
+    'apps.api_v1.apps.ApiConfig'
     ]
+
+import apps.api_v1.settings
+from apps.api_v1.settings import REST_FRAMEWORK, INSTALLED_APPS as apiv1
+INSTALLED_APPS += apiv1
  
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,13 +129,17 @@ USE_TZ = True
 
 ROOT_URL='/'
 LOGIN_URL='registration/login.html'
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATIC_ROOT = '/tvv/media/' + PROJECT_NAME + '/static/'
-STATIC_URL = '/static/'
-STATICFILES_DIRS = ( 'css', 'images')
 
 GRAPHENE = { 'SCHEMA':'apps.tvvroot.schema.schema' }
+
+STATIC_ROOT = config.get(CONFIG_SECTION_NAME, 'STATIC')
+if None == STATIC_ROOT:
+    AUX_FILE_LOCATION = os.path.join(os.path.abspath(os.sep), 'tvv')
+    STATIC_ROOT = os.path.join(AUX_FILE_LOCATION, PROJECT_NAME, 'static')
+STATIC_URL = '/static/'
+#STATICFILES_DIRS = [
+#    STATIC_ROOT,
+#]
 
 UPLOAD_USER_IMAGE = 'user/images/'
 UPLOAD_INSTRUMENT_BLEND = 'instrument/blend/'
@@ -139,11 +149,9 @@ UPLOAD_PLAYER_IMAGE = 'player/images/'
 UPLOAD_MUSIC_MIDI = 'music/midi/'
 UPLOAD_MUSIC_AUDIO = 'music/audio/'
 UPLOAD_VIDEO = 'music/video/'
-# Media files (admin/user uploads)
-MEDIA_ROOT = '/tvv/media/' + PROJECT_NAME + '/media/'
+
+MEDIA_ROOT = config.get(CONFIG_SECTION_NAME, 'MEDIA')
 MEDIA_URL = '/media/'
-# Blagent Controller
-BLAGENT_HOST = config.get("TVV_BLAGENT", "HOST")
-BLAGENT_PORT = config.get("TVV_BLAGENT", "PORT")
-BLAGENT_URI = "http://" + BLAGENT_HOST + ":" + str(BLAGENT_PORT) + "/tvvblagent/"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 print("End of settings.py")
+

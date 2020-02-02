@@ -21,7 +21,7 @@ class RegisterView(TemplateView):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            messages.success(request, f'Account created for {{username}}.')
+            messages.success(request, 'Account created for {{username}}.'.format(username))
             whereTo = reverse('App')
             return redirect(whereTo)
         return render(request, self.template_name, self.get_context_data())            

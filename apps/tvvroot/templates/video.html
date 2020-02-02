@@ -3,13 +3,11 @@
 {% block content %}
 <div>
 	<p>
-		{{title}}
-		<script>
-			let videoUrl = "mp4://tvvspa:8081{{url}}";
-		</script>
+		title:{{title}}<br>
+		media_type:{{media_type}}<br>
+		url: {{url}}
 		<video width="320" height="240" controls>
-			videoUrl
-			<source src="$videoUrl" type="video/mp4">
+			<source src="{{url}}" type="{{media_type}}">
 			Your browser does not support the video tag.
 		</video>
 	</p>

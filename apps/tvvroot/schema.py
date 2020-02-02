@@ -1,6 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-from .models import Player, Instrument, Music, Order
+from .models import Player, Instrument, Music, Order, InstrumentMap
 
 class PlayerType(DjangoObjectType):
     class Meta:
@@ -18,6 +18,9 @@ class OrderType(DjangoObjectType):
     class Meta:
         model = Order
 
+class InstrumentMapType(DjangoObjectType):
+    class Meta:
+        model = InstrumentMap
 
 class Query(graphene.ObjectType):
 #    players = graphene.List(PlayerType)

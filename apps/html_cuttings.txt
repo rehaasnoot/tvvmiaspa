@@ -1,0 +1,1 @@
+<iframe class="embed-responsive-item rounded" src="https://www.youtube.com/embed/videoseries?list=PLa1F2ddGya_-UvuAqHAksYnB0qL9yWDO6" allow="autoplay; encrypted-media" allowfullscreen="allowfullscreen" frameborder="0"></iframe>

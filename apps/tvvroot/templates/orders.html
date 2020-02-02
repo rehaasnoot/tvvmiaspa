@@ -1,12 +1,30 @@
 {% extends "app.html" %}
-
+{% load static %}
 {% block content %}
-<div>
-	<h1>Order Template for user: {{ username }}</h1>
-	<ul>
-	{% for order in orders %}
-		<a href="{% url 'order_detail' order.id %}">{{order.descr}}</a>
-	{% endfor %}
-	</ul>
+<h1>Orders for user: {{ username }}</h1>
+	<table style="width:100%">
+	  <tr>
+	    <th>Description</th>
+	    <th>Start Frame</th>
+	    <th>End Frame</th>
+		<th>MIDI Track</th>
+		<th>Status</th>
+	  </tr>
+		{% for order in orders %}
+		<tr>
+			<td>{{order.descr}}</td>
+			<td>{{order.start_frame}}</td>
+			<td>{{order.end_frame}}</td>
+			<td>{{order.midi_track}}</td>
+			<td>{{order.status|default:"N/A"}}</td>
+			<td>
+				<form action="{% url 'Order Purchase' order.pk %}" method="post">
+				{% csrf_token %}
+				{{ form }}
+				<input class="btn btn-primary" type="submit" value="Buy" />
+				</form>
+			</td>
+		{% endfor %}
+	</table>
 </div>
 {% endblock %}

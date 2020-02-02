@@ -3,6 +3,7 @@
 	<name>tvvmia_frontend</name>
 	<comment></comment>
 	<projects>
+		<project>TVVConfig</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

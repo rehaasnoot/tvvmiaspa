@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from apps.settings import MEDIA_ROOT, MEDIA_URL, STATIC_URL, STATIC_ROOT
-from django.contrib import admin
+from django.contrib import admin, staticfiles
 from django.urls import path, re_path
 from django.conf.urls import url, include
 from django.conf.urls.static import static
@@ -24,7 +24,9 @@ from graphene_django.views import GraphQLView
 #from django.contrib.auth import views as auth_views
 #from django.contrib.auth.decorators import login_required
 from apps.tvvroot import views as rootv
+from apps.tvvroot import forms as rootf
 from apps.user_registration import views as regv
+from apps.api_v1.urls import urlpatterns as apiurls
 
 urlpatterns = [
     path('', view=rootv.IndexView.as_view(), name=rootv.IndexView.name),
@@ -39,16 +41,22 @@ urlpatterns = [
     path('videos/', view=rootv.VideosView.as_view(), name=rootv.VideosView.name),
     path('video/<int:video_id>/', view=rootv.VideoView.as_view(), name=rootv.VideosView.name),
     url(r'^orders/', view=rootv.OrdersView.as_view(), name=rootv.OrdersView.name),
-    url(r'^order/create/', view=rootv.OrderCreate.as_view(), name=rootv.OrderCreate.name),
-    url(r'^order/update/', view=rootv.OrderUpdate.as_view(), name=rootv.OrderUpdate.name),
-    url(r'^order/delete/', view=rootv.OrderDelete.as_view(), name=rootv.OrderDelete.name),
+    url(r'^order/purchase/(?P<pk>\d+)$', view=rootv.OrderPurchaseView.as_view(), name=rootv.OrderPurchaseView.name),
+    url(r'^order/create/', view=rootv.OrderCreateView.as_view(), name=rootv.OrderCreateView.name),
+#    url(r'^order/update/', view=rootv.OrderUpdate.as_view(), name=rootv.OrderUpdate.name),
+#    url(r'^order/delete/', view=rootv.OrderDelete.as_view(), name=rootv.OrderDelete.name),
+#    url(r'^order/submit/(?P<pk>\d+)$', view=rootv.OrderSubmit.as_view(), name=rootv.OrderSubmit.name),
     re_path(r'^order/detail/(?P<pk>\d+)$', view=rootv.OrderDetailView.as_view(), name=rootv.OrderDetailView.name),
 #    path('order/detail/<int:pk>/', view=rootv.OrderDetailView.as_view(), name=rootv.OrderDetailView.name),
-    url(r'^blagent/', view=rootv.TVVBlagentView.as_view(), name=rootv.TVVBlagentView.name),
+    path('blagent/', view=rootv.TVVBlagentView.as_view(), name=rootv.TVVBlagentView.name),
     re_path(r'^fib/(?P<n>\d+)$', view=rootv.WWWfibonacci, name='fibonacci'),
 ]
+
+urlpatterns += apiurls
+
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
+
 
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse

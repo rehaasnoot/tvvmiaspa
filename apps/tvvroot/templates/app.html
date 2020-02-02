@@ -1,13 +1,13 @@
 {% extends "base.html" %}
+<header>
 {% block header %}
-Hello {{username}}! Welcome to TVV Musical Instrument Animator!</header>
-{% endblock %}
-{% block content %}
-<div id="tvv-menu">
-	<ul>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+    	<a class="dropdown-item" href="/">Home</a>
 		{% for menu in menus %}
-			<a href="{{menu.url}}">{{menu.name}}</a>
+			<a class="dropdown-item" href="{{menu.url}}">{{menu.name}}</a>
 		{% endfor %}
-	</ul>
-</div>
+    </div>
+{% endblock %}
+</header>
+{% block content %}
 {% endblock %}

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+### This is a wrapper for manage.py based on what's going on inside PyDev
+
+### The PYTHONPATH that is used by PyDev: ###
+export PYTHONPATH="/home/tvvdev/.eclipse/360744294_linux_gtk_x86_64/plugins/org.python.pydev.core_7.4.0.201910251334/pysrc/pydev_sitecustomize:/usr/lib/python3.6:/usr/lib/python3.6/lib-dynload:/home/tvvdev/.local/lib/python3.6/site-packages:/usr/local/lib/python3.6/dist-packages:/usr/lib/python3/dist-packages"
+
+python manage.py $*
+
